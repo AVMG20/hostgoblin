@@ -3,12 +3,12 @@
 import {Edit, Eye} from 'lucide-react';
 import Link from 'next/link';
 import {Post} from "@/lib/db/schema";
-import {Column} from "@/lib/resource";
+import {DataTableColumn} from "@/components/data-table";
 import { Button } from '@/components/ui/button';
 import {deletePost} from "@/app/admin/posts/actions";
 import {DeleteButton} from "@/components/form-components";
 
-export const columns: Column[] = [{
+export const columns: DataTableColumn<Post>[] = [{
     key: 'id',
     label: 'ID',
     sortable: true
@@ -56,4 +56,3 @@ export const columns: Column[] = [{
         </div>
     )
 }]
-

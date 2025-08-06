@@ -143,26 +143,19 @@ function DatePicker({ name, defaultValue, ...props }: DatePickerProps) {
     );
 }
 
-const countries = [
-    { label: 'Afghanistan', value: 'AF' },
-    { label: 'Åland Islands', value: 'AX' },
-    { label: 'Albania', value: 'AL' },
-    { label: 'Algeria', value: 'DZ' },
-    { label: 'Italy', value: 'IT' },
-    { label: 'Jamaica', value: 'JM' },
-    { label: 'Japan', value: 'JP' },
-    { label: 'United States', value: 'US' },
-    { label: 'Uruguay', value: 'UY' },
-];
-
 type ComboboxProps = {
     id?: string;
     name: string;
+    placeholder?: string,
+    items: Array<{
+        label: string,
+        value: string
+    }>,
     defaultValue?: string;
     ['aria-describedby']?: string;
 };
 
-function ComboBox({ name, defaultValue, ...props }: ComboboxProps) {
+function ComboBox({ items, placeholder, name, defaultValue, ...props }: ComboboxProps) {
     const triggerRef = useRef<HTMLButtonElement>(null);
     const control = useControl({
         defaultValue,
@@ -188,41 +181,38 @@ function ComboBox({ name, defaultValue, ...props }: ComboboxProps) {
                         variant="outline"
                         role="combobox"
                         className={cn(
-                            'w-[200px] justify-between',
+                            'w-[300px] justify-between',
                             !control.value && 'text-muted-foreground',
                             'focus:ring-2 focus:ring-stone-950 focus:ring-offset-2',
                         )}
                     >
-                        {control.value
-                            ? countries.find((country) => country.value === control.value)
-                                ?.label
-                            : 'Select country'}
+                        {control.value ? items.find((item) => item.value === control.value)?.label : placeholder ?? 'Select'}
                         <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="w-[300px] p-0">
                     <Command>
                         <CommandInput placeholder="Search country..." />
                         <CommandList>
                             <CommandEmpty>No country found.</CommandEmpty>
                             <CommandGroup>
-                                {countries.map((country) => (
+                                {items.map((item) => (
                                     <CommandItem
-                                        value={country.label}
-                                        key={country.value}
+                                        value={item.label}
+                                        key={item.value}
                                         onSelect={() => {
-                                            control.change(country.value);
+                                            control.change(item.value);
                                         }}
                                     >
                                         <CheckIcon
                                             className={cn(
                                                 'mr-2 h-4 w-4',
-                                                country.value === control.value
+                                                item.value === control.value
                                                     ? 'opacity-100'
                                                     : 'opacity-0',
                                             )}
                                         />
-                                        {country.label}
+                                        {item.label}
                                     </CommandItem>
                                 ))}
                             </CommandGroup>
