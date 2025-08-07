@@ -3,7 +3,7 @@ import {Button} from '@/components/ui/button';
 import {Plus} from 'lucide-react';
 import Link from 'next/link';
 import {Post, posts as postsTable} from "@/lib/db/schema";
-import {columns} from "@/app/(admin)/admin/posts/columns";
+import {columns} from "@/app/(dashboard)/dashboard/posts/columns";
 import {PageProps, parseSearchParams, queryIndex} from "@/lib/db/datatable";
 
 export default async function PostsPage({searchParams}: PageProps) {
@@ -27,7 +27,7 @@ export default async function PostsPage({searchParams}: PageProps) {
         <div className="container mx-auto py-8">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Posts</h1>
-                <Link href="/app/(admin)/admin/posts/create">
+                <Link href="/app/(dashboard)/dashboard/posts/create">
                     <Button>
                         <Plus className="w-4 h-4 mr-2"/>
                         Create New Post

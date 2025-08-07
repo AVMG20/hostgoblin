@@ -2,7 +2,7 @@
 
 import { SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { CategoryFormData, categorySchema } from '@/app/(admin)/admin/categories/schema';
+import { CategoryFormData, categorySchema } from '@/app/(dashboard)/dashboard/categories/schema';
 import { startTransition, useActionState } from "react";
 import {
     Field,
@@ -16,7 +16,7 @@ import {
     ComboBox
 } from "@/components/form/form-components";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 // Mock parent categories data - replace with your actual data
 const parentCategories = [
@@ -156,7 +156,7 @@ export function Form({
                             </Field>
                         </div>
 
-                        {/*<Separator />*/}
+                        <Separator />
 
                         {/* Display & Organization Section */}
                         <div className="space-y-4">
@@ -241,7 +241,7 @@ export function Form({
                             </Field>
                         </div>
 
-                        {/*<Separator />*/}
+                        <Separator />
 
                         <ActionButtons>{submitButtonText}</ActionButtons>
                     </form>

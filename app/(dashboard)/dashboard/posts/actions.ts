@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
-import { postSchema } from '@/app/(admin)/admin/posts/schema';
+import { postSchema } from '@/app/(dashboard)/dashboard/posts/schema';
 import {db} from "@/lib/db/db";
 import {posts} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";
@@ -20,7 +20,7 @@ export async function createPost(prevState: unknown, formData: FormData) {
     try {
         // @ts-ignore
         await db.insert(posts).values(submission.value)
-        revalidatePath('/admin/posts');
+        revalidatePath('/dashboard/posts');
     } catch (error) {
         console.log(error);
         return submission.reply({
@@ -28,8 +28,8 @@ export async function createPost(prevState: unknown, formData: FormData) {
         });
     }
 
-    revalidatePath('/admin/posts');
-    redirect('/admin/posts');
+    revalidatePath('/dashboard/posts');
+    redirect('/dashboard/posts');
 }
 
 export async function updatePost(prevState: unknown, formData: FormData) {
@@ -46,15 +46,15 @@ export async function updatePost(prevState: unknown, formData: FormData) {
         await db.update(posts)
             .set({...submission.value, id: undefined})
             .where(eq(posts.id, id));
-        revalidatePath('/admin/posts');
+        revalidatePath('/dashboard/posts');
     } catch (error: any) {
         return submission.reply({
             formErrors: ['Failed to update post. Please try again.'],
         });
     }
 
-    revalidatePath('/admin/posts');
-    redirect('/admin/posts');
+    revalidatePath('/dashboard/posts');
+    redirect('/dashboard/posts');
 }
 
 export async function deletePost(id: number) {
@@ -64,7 +64,7 @@ export async function deletePost(id: number) {
         throw new Error('Failed to delete post');
     }
 
-    revalidatePath('/admin/posts');
+    revalidatePath('/dashboard/posts');
 }
 
 export async function getPost(id: number) {

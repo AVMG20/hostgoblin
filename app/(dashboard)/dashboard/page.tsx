@@ -54,10 +54,10 @@ export default function AdminDashboard() {
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="font-semibold leading-none tracking-tight mb-4">Quick Actions</h3>
           <div className="space-y-2">
-            <a href="/admin/categories/create" className="block text-sm text-blue-600 hover:text-blue-800">
+            <a href="/dashboard/categories/create" className="block text-sm text-blue-600 hover:text-blue-800">
               + Add New Category
             </a>
-            <a href="/admin/posts/create" className="block text-sm text-blue-600 hover:text-blue-800">
+            <a href="/dashboard/posts/create" className="block text-sm text-blue-600 hover:text-blue-800">
               + Create New Post
             </a>
           </div>

@@ -1,5 +1,5 @@
-import {updatePost, getPost} from '@/app/(admin)/admin/posts/actions';
-import {Form} from '@/app/(admin)/admin/posts/form';
+import {updatePost, getPost} from '@/app/(dashboard)/dashboard/posts/actions';
+import {Form} from '@/app/(dashboard)/dashboard/posts/form';
 import {notFound} from 'next/navigation';
 
 interface EditPostPageProps {

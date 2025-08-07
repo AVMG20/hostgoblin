@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {Category} from "@/lib/db/schema";
 import {DataTableColumn} from "@/components/form/data-table";
 import { Button } from '@/components/ui/button';
-import {deleteCategory} from "@/app/(admin)/admin/categories/actions";
+import {deleteCategory} from "@/app/(dashboard)/dashboard/categories/actions";
 import {DeleteButton} from "@/components/form/form-components";
 
 export const columns: DataTableColumn<Category>[] = [{
@@ -56,7 +56,7 @@ export const columns: DataTableColumn<Category>[] = [{
     sortable: false,
     render: (row: Category) => (
         <div className="flex space-x-2">
-            <Link href={`/app/(admin)/admin/categories/edit/${row.id}`}>
+            <Link href={`/app/(dashboard)/dashboard/categories/edit/${row.id}`}>
                 <Button variant="outline" size="sm">
                     <Edit className="w-4 h-4"/>
                 </Button>

@@ -7,7 +7,7 @@ import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight, Search} from 'lucide-react';
 
-interface DataTableColumn<T> {
+export interface DataTableColumn<T> {
     key: string;
     label: string;
     sortable?: boolean;

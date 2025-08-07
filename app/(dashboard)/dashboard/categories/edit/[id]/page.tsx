@@ -1,5 +1,5 @@
-import {updateCategory, getCategory} from '@/app/(admin)/admin/categories/actions';
-import {Form} from '@/app/(admin)/admin/categories/form';
+import {updateCategory, getCategory} from '@/app/(dashboard)/dashboard/categories/actions';
+import {Form} from '@/app/(dashboard)/dashboard/categories/form';
 import {notFound} from 'next/navigation';
 
 interface EditCategoryPageProps {

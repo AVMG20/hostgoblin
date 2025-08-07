@@ -1,5 +1,5 @@
-import {createCategory} from '@/app/(admin)/admin/categories/actions';
-import {Form} from '@/app/(admin)/admin/categories/form';
+import {createCategory} from '@/app/(dashboard)/dashboard/categories/actions';
+import {Form} from '@/app/(dashboard)/dashboard/categories/form';
 export default function CreateCategoryPage() {
     return (
         <Form

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {Post} from "@/lib/db/schema";
 import {DataTableColumn} from "@/components/form/data-table";
 import { Button } from '@/components/ui/button';
-import {deletePost} from "@/app/(admin)/admin/posts/actions";
+import {deletePost} from "@/app/(dashboard)/dashboard/posts/actions";
 import {DeleteButton} from "@/components/form/form-components";
 
 export const columns: DataTableColumn<Post>[] = [{
@@ -42,12 +42,12 @@ export const columns: DataTableColumn<Post>[] = [{
     sortable: false,
     render: (row: Post) => (
         <div className="flex space-x-2">
-            {/*<Link href={`/admin/posts/${row.id}`}>*/}
+            {/*<Link href={`/dashboard/posts/${row.id}`}>*/}
             {/*    <Button variant="outline" size="sm">*/}
             {/*        <Eye className="w-4 h-4"/>*/}
             {/*    </Button>*/}
             {/*</Link>*/}
-            <Link href={`/app/(admin)/admin/posts/edit/${row.id}`}>
+            <Link href={`/app/(dashboard)/dashboard/posts/edit/${row.id}`}>
                 <Button variant="outline" size="sm">
                     <Edit className="w-4 h-4"/>
                 </Button>

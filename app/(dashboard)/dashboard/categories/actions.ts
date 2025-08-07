@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
-import { categorySchema } from '@/app/(admin)/admin/categories/schema';
+import { categorySchema } from '@/app/(dashboard)/dashboard/categories/schema';
 import {db} from "@/lib/db/db";
 import {categories} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";
@@ -20,7 +20,7 @@ export async function createCategory(prevState: unknown, formData: FormData) {
     try {
         // @ts-ignore
         await db.insert(categories).values(submission.value)
-        revalidatePath('/admin/categories');
+        revalidatePath('/dashboard/categories');
     } catch (error) {
         console.log(error);
         return submission.reply({
@@ -28,8 +28,8 @@ export async function createCategory(prevState: unknown, formData: FormData) {
         });
     }
 
-    revalidatePath('/admin/categories');
-    redirect('/admin/categories');
+    revalidatePath('/dashboard/categories');
+    redirect('/dashboard/categories');
 }
 
 export async function updateCategory(prevState: unknown, formData: FormData) {
@@ -46,15 +46,15 @@ export async function updateCategory(prevState: unknown, formData: FormData) {
         await db.update(categories)
             .set({...submission.value, id: undefined})
             .where(eq(categories.id, id));
-        revalidatePath('/admin/categories');
+        revalidatePath('/dashboard/categories');
     } catch (error: any) {
         return submission.reply({
             formErrors: ['Failed to update category. Please try again.'],
         });
     }
 
-    revalidatePath('/admin/categories');
-    redirect('/admin/categories');
+    revalidatePath('/dashboard/categories');
+    redirect('/dashboard/categories');
 }
 
 export async function deleteCategory(id: number) {
@@ -64,7 +64,7 @@ export async function deleteCategory(id: number) {
         throw new Error('Failed to delete category');
     }
 
-    revalidatePath('/admin/categories');
+    revalidatePath('/dashboard/categories');
 }
 
 export async function getCategory(id: number) {

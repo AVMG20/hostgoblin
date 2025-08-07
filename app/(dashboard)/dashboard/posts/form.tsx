@@ -2,7 +2,7 @@
 
 import {SubmissionResult, useForm} from '@conform-to/react';
 import {parseWithZod} from '@conform-to/zod';
-import {PostFormData, postSchema} from '@/app/(admin)/admin/posts/schema';
+import {PostFormData, postSchema} from '@/app/(dashboard)/dashboard/posts/schema';
 import {startTransition, useActionState} from "react";
 import {
     Field,
