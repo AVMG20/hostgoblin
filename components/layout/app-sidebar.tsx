@@ -29,20 +29,20 @@ import {
 // Menu items
 const menuItems = [
     {
-        title: "Dashboard", url: "/admin", icon: Home,
+        title: "Dashboard", url: "/dashboard", icon: Home,
     },
     {
         title: "Catalog", icon: Package, items: [
             {
-                title: "Categories", url: "/admin/categories",
+                title: "Categories", url: "/dashboard/categories",
             },
             {
-                title: "Products", url: "/admin/products",
+                title: "Products", url: "/dashboard/products",
             },
         ],
     },
     {
-        title: "Posts", url: "/admin/posts", icon: FileText,
+        title: "Posts", url: "/dashboard/posts", icon: FileText,
     },
 ]
 
