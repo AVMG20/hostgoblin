@@ -49,7 +49,6 @@ import { Textarea } from '../ui/textarea';
 import {useFormStatus} from "react-dom";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {useConfirm} from "@/components/form/confirm";
-import {deletePost} from "@/app/(admin)/admin/posts/actions";
 
 type FieldProps = {
     children: React.ReactNode;

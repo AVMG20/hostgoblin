@@ -28,7 +28,9 @@ export async function createCategory(prevState: unknown, formData: FormData) {
         });
     }
 
+    revalidatePath('/');
     revalidatePath('/dashboard/categories');
+    revalidatePath('/categories/[slug]');
     redirect('/dashboard/categories');
 }
 
@@ -53,7 +55,9 @@ export async function updateCategory(prevState: unknown, formData: FormData) {
         });
     }
 
+    revalidatePath('/');
     revalidatePath('/dashboard/categories');
+    revalidatePath('/categories/[slug]');
     redirect('/dashboard/categories');
 }
 
@@ -64,7 +68,9 @@ export async function deleteCategory(id: number) {
         throw new Error('Failed to delete category');
     }
 
+    revalidatePath('/');
     revalidatePath('/dashboard/categories');
+    revalidatePath('/categories/[slug]');
 }
 
 export async function getCategory(id: number) {

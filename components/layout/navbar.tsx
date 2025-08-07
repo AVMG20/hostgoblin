@@ -41,7 +41,7 @@ export default async function Navbar() {
                         {rootCategories.map((category) => (
                             <Link
                                 key={category.id}
-                                href={`/categories/${category.slug}`}
+                                href={`/app/(public)/categories/${category.slug}`}
                                 className="text-muted-foreground hover:text-primary transition-colors font-medium"
                             >
                                 {category.name}
@@ -63,7 +63,7 @@ export default async function Navbar() {
                                     {rootCategories.map((category) => (
                                         <Link
                                             key={category.id}
-                                            href={`/categories/${category.slug}`}
+                                            href={`/app/(public)/categories/${category.slug}`}
                                             className="text-muted-foreground hover:text-primary transition-colors font-medium py-2"
                                         >
                                             {category.name}

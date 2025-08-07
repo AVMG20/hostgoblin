@@ -56,7 +56,7 @@ export const columns: DataTableColumn<Category>[] = [{
     sortable: false,
     render: (row: Category) => (
         <div className="flex space-x-2">
-            <Link href={`/app/(dashboard)/dashboard/categories/edit/${row.id}`}>
+            <Link href={`/dashboard/categories/edit/${row.id}`}>
                 <Button variant="outline" size="sm">
                     <Edit className="w-4 h-4"/>
                 </Button>

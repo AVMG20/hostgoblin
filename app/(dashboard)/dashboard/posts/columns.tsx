@@ -47,7 +47,7 @@ export const columns: DataTableColumn<Post>[] = [{
             {/*        <Eye className="w-4 h-4"/>*/}
             {/*    </Button>*/}
             {/*</Link>*/}
-            <Link href={`/app/(dashboard)/dashboard/posts/edit/${row.id}`}>
+            <Link href={`/dashboard/posts/edit/${row.id}`}>
                 <Button variant="outline" size="sm">
                     <Edit className="w-4 h-4"/>
                 </Button>

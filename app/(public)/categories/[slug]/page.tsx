@@ -9,9 +9,9 @@ import { Separator } from '@/components/ui/separator';
 import { Star, Cpu, HardDrive, Zap, Server } from 'lucide-react';
 
 interface CategoryPageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 async function getCategory(slug: string) {
@@ -45,7 +45,8 @@ async function getCategoryProducts(categoryId: number) {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
-    const category = await getCategory(params.slug);
+    const param = await params;
+    const category = await getCategory(param.slug);
 
     if (!category) {
         return {
@@ -69,7 +70,8 @@ function formatSpecs(product: any) {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-    const category = await getCategory(params.slug);
+    const param = await params;
+    const category = await getCategory(param.slug);
 
     if (!category) {
         notFound();

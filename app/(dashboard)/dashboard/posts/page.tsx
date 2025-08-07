@@ -27,7 +27,7 @@ export default async function PostsPage({searchParams}: PageProps) {
         <div className="container mx-auto py-8">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Posts</h1>
-                <Link href="/app/(dashboard)/dashboard/posts/create">
+                <Link href="/dashboard/posts/create">
                     <Button>
                         <Plus className="w-4 h-4 mr-2"/>
                         Create New Post
