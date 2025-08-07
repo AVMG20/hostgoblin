@@ -1,5 +1,5 @@
-import {createPost} from '@/app/admin/posts/actions';
-import {Form} from  '@/app/admin/posts/form';
+import {createPost} from '@/app/(admin)/admin/posts/actions';
+import {Form} from '@/app/(admin)/admin/posts/form';
 export default function CreatePostPage() {
     return (
         <Form

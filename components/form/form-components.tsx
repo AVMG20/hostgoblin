@@ -6,13 +6,13 @@ import {
     ChevronsUpDown as ChevronsUpDownIcon, Trash2,
 } from 'lucide-react';
 import { useRef } from 'react';
-import { Button } from './ui/button';
-import { Calendar } from './ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Button } from '../ui/button';
+import { Calendar } from '../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import {
     RadioGroup as ShadcnRadioGroup,
     RadioGroupItem,
-} from './ui/radio-group';
+} from '../ui/radio-group';
 import {
     Command,
     CommandEmpty,
@@ -20,36 +20,36 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from './ui/command';
+} from '../ui/command';
 import {
     SelectTrigger,
     Select as ShadcnSelect,
     SelectValue,
     SelectContent,
     SelectItem,
-} from './ui/select';
+} from '../ui/select';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import {
     InputOTP as ShadcnInputOTP,
     InputOTPGroup,
     InputOTPSlot,
-} from './ui/input-otp';
+} from '../ui/input-otp';
 import {
     ToggleGroup as ShadcnToggleGroup,
     ToggleGroupItem,
-} from './ui/toggle-group';
-import { Switch as ShadcnSwitch } from './ui/switch';
-import { Slider as ShadcnSlider } from './ui/slider';
-import { Checkbox as ShadcnCheckbox } from './ui/checkbox';
+} from '../ui/toggle-group';
+import { Switch as ShadcnSwitch } from '../ui/switch';
+import { Slider as ShadcnSlider } from '../ui/slider';
+import { Checkbox as ShadcnCheckbox } from '../ui/checkbox';
 import { cn } from '@/lib/utils';
 import { useControl } from '@conform-to/react/future';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
 import {useFormStatus} from "react-dom";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {useConfirm} from "@/components/confirm";
-import {deletePost} from "@/app/admin/posts/actions";
+import {useConfirm} from "@/components/form/confirm";
+import {deletePost} from "@/app/(admin)/admin/posts/actions";
 
 type FieldProps = {
     children: React.ReactNode;

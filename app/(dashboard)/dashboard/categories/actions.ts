@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
-import { categorySchema } from '@/app/admin/categories/schema';
+import { categorySchema } from '@/app/(admin)/admin/categories/schema';
 import {db} from "@/lib/db/db";
 import {categories} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";

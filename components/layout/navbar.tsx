@@ -30,7 +30,7 @@ export default async function Navbar() {
                 <div className="flex items-center justify-between h-16">
                     {/* Logo/Home Link */}
                     <Link
-                        href="/"
+                        href="/public"
                         className="text-xl font-bold hover:text-primary transition-colors"
                     >
                         Your Store

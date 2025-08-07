@@ -2,7 +2,7 @@
 
 import { SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { CategoryFormData, categorySchema } from '@/app/admin/categories/schema';
+import { CategoryFormData, categorySchema } from '@/app/(admin)/admin/categories/schema';
 import { startTransition, useActionState } from "react";
 import {
     Field,
@@ -14,7 +14,7 @@ import {
     ActionButtons,
     FormErrors,
     ComboBox
-} from "@/components/form-components";
+} from "@/components/form/form-components";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Separator } from "@/components/ui/separator";
 

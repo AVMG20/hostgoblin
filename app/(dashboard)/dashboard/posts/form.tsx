@@ -2,7 +2,7 @@
 
 import {SubmissionResult, useForm} from '@conform-to/react';
 import {parseWithZod} from '@conform-to/zod';
-import {PostFormData, postSchema} from '@/app/admin/posts/schema';
+import {PostFormData, postSchema} from '@/app/(admin)/admin/posts/schema';
 import {startTransition, useActionState} from "react";
 import {
     Field,
@@ -13,7 +13,7 @@ import {
     Checkbox,
     ActionButtons,
     FormErrors
-} from "@/components/form-components";
+} from "@/components/form/form-components";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import { AlertCircleIcon } from 'lucide-react';
 
