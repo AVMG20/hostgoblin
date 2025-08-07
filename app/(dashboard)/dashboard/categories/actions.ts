@@ -23,13 +23,14 @@ export async function createCategory(prevState: unknown, formData: FormData) {
 
         revalidatePath('/');
         revalidatePath('/dashboard/categories');
-        redirect('/dashboard/categories');
     } catch (error) {
         console.log(error);
         return submission.reply({
             formErrors: ['Failed to create category. Please try again.'],
         });
     }
+
+    redirect('/dashboard/categories');
 }
 
 export async function updateCategory(prevState: unknown, formData: FormData) {
