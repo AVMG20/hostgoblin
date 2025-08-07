@@ -20,18 +20,16 @@ export async function createCategory(prevState: unknown, formData: FormData) {
     try {
         // @ts-ignore
         await db.insert(categories).values(submission.value)
+
+        revalidatePath('/');
         revalidatePath('/dashboard/categories');
+        redirect('/dashboard/categories');
     } catch (error) {
         console.log(error);
         return submission.reply({
             formErrors: ['Failed to create category. Please try again.'],
         });
     }
-
-    revalidatePath('/');
-    revalidatePath('/dashboard/categories');
-    revalidatePath('/categories/[slug]');
-    redirect('/dashboard/categories');
 }
 
 export async function updateCategory(prevState: unknown, formData: FormData) {
@@ -45,32 +43,39 @@ export async function updateCategory(prevState: unknown, formData: FormData) {
 
     try {
         const id = submission.value.id;
-        await db.update(categories)
+        const category = await db.update(categories)
             .set({...submission.value, id: undefined})
-            .where(eq(categories.id, id));
+            .where(eq(categories.id, id))
+            .returning()
+
+        const slug = category[0].slug
+
+        revalidatePath('/');
         revalidatePath('/dashboard/categories');
+        revalidatePath(`/categories/${slug}`);
     } catch (error: any) {
         return submission.reply({
             formErrors: ['Failed to update category. Please try again.'],
         });
     }
 
-    revalidatePath('/');
-    revalidatePath('/dashboard/categories');
-    revalidatePath('/categories/[slug]');
+
     redirect('/dashboard/categories');
 }
 
 export async function deleteCategory(id: number) {
     try {
-        await db.delete(categories).where(eq(categories.id, id));
+        const category = await db.delete(categories).where(eq(categories.id, id)).returning();
+
+        const slug = category[0].slug
+
+        revalidatePath('/');
+        revalidatePath('/dashboard/categories');
+        revalidatePath(`/categories/${slug}`);
+
     } catch (error: any) {
         throw new Error('Failed to delete category');
     }
-
-    revalidatePath('/');
-    revalidatePath('/dashboard/categories');
-    revalidatePath('/categories/[slug]');
 }
 
 export async function getCategory(id: number) {

@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Star, Cpu, HardDrive, Zap, Server } from 'lucide-react';
 
+export const revalidate = 3600;
+
 interface CategoryPageProps {
     params: Promise<{
         slug: string;
@@ -44,6 +46,26 @@ async function getCategoryProducts(categoryId: number) {
     }
 }
 
+async function getAllCategories() {
+    try {
+        return await db.select()
+            .from(categories)
+            .where(eq(categories.isActive, true));
+    } catch (error) {
+        console.error('Failed to get categories:', error);
+        return [];
+    }
+}
+
+export async function generateStaticParams() {
+    const allCategories = await getAllCategories();
+    return allCategories.map((category) => (
+        {
+            slug: category.slug,
+        }
+    ));
+}
+
 export async function generateMetadata({ params }: CategoryPageProps) {
     const param = await params;
     const category = await getCategory(param.slug);
@@ -59,6 +81,8 @@ export async function generateMetadata({ params }: CategoryPageProps) {
         description: category.description || `Browse ${category.name} products`,
     };
 }
+
+
 
 function formatSpecs(product: any) {
     const specs = [];

@@ -30,7 +30,7 @@ export default async function Navbar() {
                 <div className="flex items-center justify-between h-16">
                     {/* Logo/Home Link */}
                     <Link
-                        href="/public"
+                        href="/"
                         className="text-xl font-bold hover:text-primary transition-colors"
                     >
                         Your Store
@@ -41,7 +41,7 @@ export default async function Navbar() {
                         {rootCategories.map((category) => (
                             <Link
                                 key={category.id}
-                                href={`/app/(public)/categories/${category.slug}`}
+                                href={`/categories/${category.slug}`}
                                 className="text-muted-foreground hover:text-primary transition-colors font-medium"
                             >
                                 {category.name}
@@ -63,7 +63,7 @@ export default async function Navbar() {
                                     {rootCategories.map((category) => (
                                         <Link
                                             key={category.id}
-                                            href={`/app/(public)/categories/${category.slug}`}
+                                            href={`/categories/${category.slug}`}
                                             className="text-muted-foreground hover:text-primary transition-colors font-medium py-2"
                                         >
                                             {category.name}
