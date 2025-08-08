@@ -20,7 +20,7 @@ export const categorySchema = z.object({
     sortOrder: z.number()
         .default(0),
     isActive: z.boolean()
-        .default(true),
+        .default(false),
 });
 
 export type CategoryFormData = z.infer<typeof categorySchema>;

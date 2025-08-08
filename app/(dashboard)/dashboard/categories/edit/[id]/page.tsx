@@ -25,7 +25,7 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
                 icon: category.icon || undefined,
                 parentId: category.parentId || undefined,
                 sortOrder: category.sortOrder || 0,
-                isActive: category.isActive || true,
+                isActive: category.isActive || false,
             }}
             title="Edit Category"
             submitButtonText="Update Category"
