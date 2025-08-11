@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { db } from '@/lib/db/db';
-import { categories, products } from '@/lib/db/schema';
+import { categories, products, images } from '@/lib/db/schema';
 import { and, eq, isNull } from 'drizzle-orm';
+import { getImageUrl } from '@/lib/image-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,13 +12,40 @@ import Footer from "@/components/layout/footer";
 
 async function getRootCategories() {
     try {
-        return await db.select()
-            .from(categories)
-            .where(and(
-                isNull(categories.parentId),
-                eq(categories.isActive, true)
-            ))
-            .orderBy(categories.sortOrder, categories.name);
+        return await db.select({
+            id: categories.id,
+            name: categories.name,
+            slug: categories.slug,
+            description: categories.description,
+            icon: categories.icon,
+            imageId: categories.imageId,
+            parentId: categories.parentId,
+            sortOrder: categories.sortOrder,
+            isActive: categories.isActive,
+            createdAt: categories.createdAt,
+            updatedAt: categories.updatedAt,
+            image: {
+                id: images.id,
+                originalName: images.originalName,
+                fileName: images.fileName,
+                mimeType: images.mimeType,
+                size: images.size,
+                width: images.width,
+                height: images.height,
+                smallPath: images.smallPath,
+                mediumPath: images.mediumPath,
+                largePath: images.largePath,
+                originalPath: images.originalPath,
+                createdAt: images.createdAt,
+            }
+        })
+        .from(categories)
+        .leftJoin(images, eq(categories.imageId, images.id))
+        .where(and(
+            isNull(categories.parentId),
+            eq(categories.isActive, true)
+        ))
+        .orderBy(categories.sortOrder, categories.name);
     } catch (error) {
         console.error('Failed to get root categories:', error);
         return [];
@@ -118,8 +146,14 @@ export default async function Home() {
                                 <Link key={category.id} href={`/categories/${category.slug}`}>
                                     <Card className="h-full hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 bg-card/50 backdrop-blur-sm">
                                         <CardHeader className="text-center pb-4">
-                                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                                                {category.icon ? (
+                                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                                                {category.image ? (
+                                                    <img 
+                                                        src={getImageUrl(category.image, 'small')} 
+                                                        alt={category.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : category.icon ? (
                                                     <span className="text-2xl">{category.icon}</span>
                                                 ) : (
                                                     <Store className="w-8 h-8 text-primary" />

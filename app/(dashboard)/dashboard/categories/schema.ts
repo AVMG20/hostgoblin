@@ -14,6 +14,11 @@ export const categorySchema = z.object({
         .optional(),
     icon: z.string()
         .optional(),
+    image: z.string()
+        .optional(), // For form handling
+    imageId: z.number()
+        .nullable()
+        .optional(),
     parentId: z.number()
         .nullable()
         .optional(),

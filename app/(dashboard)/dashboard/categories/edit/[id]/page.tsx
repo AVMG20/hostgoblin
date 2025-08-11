@@ -23,6 +23,8 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
                 slug: category.slug,
                 description: category.description || undefined,
                 icon: category.icon || undefined,
+                imageId: category.imageId || undefined,
+                image: category.image ? JSON.stringify(category.image) : undefined,
                 parentId: category.parentId || undefined,
                 sortOrder: category.sortOrder || 0,
                 isActive: category.isActive || false,

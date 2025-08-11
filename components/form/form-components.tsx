@@ -4,8 +4,9 @@ import {
     Calendar as CalendarIcon,
     Check as CheckIcon,
     ChevronsUpDown as ChevronsUpDownIcon, Trash2,
+    Upload, X
 } from 'lucide-react';
-import { useRef } from 'react';
+import {useRef, useState} from 'react';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -532,6 +533,182 @@ function MultiToggleGroup({
         </>
     );
 }
+
+
+
+interface ImageUploadProps extends React.HTMLAttributes<HTMLDivElement> {
+    name: string;
+    defaultValue?: string;
+}
+
+export function ImageUpload({ name, defaultValue, className, ...props }: ImageUploadProps) {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isDragOver, setIsDragOver] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    // Handle existing image data
+    const getInitialPreviewUrl = () => {
+        if (!defaultValue) return null;
+
+        try {
+            // Try to parse as JSON (existing image data)
+            const imageData = JSON.parse(defaultValue);
+            if (imageData && imageData.smallPath) {
+                return imageData.smallPath;
+            }
+        } catch {
+            // If not JSON, treat as direct URL or path
+            if (defaultValue.startsWith('data:') || defaultValue.startsWith('http') || defaultValue.startsWith('/')) {
+                return defaultValue;
+            }
+        }
+
+        return null;
+    };
+
+    const [previewUrl, setPreviewUrl] = useState<string | null>(getInitialPreviewUrl());
+
+    const control = useControl({
+        defaultValue,
+        onFocus() {
+            fileInputRef.current?.focus();
+        },
+    });
+
+    const handleFileSelect = (file: File | null) => {
+        if (file && file.type.startsWith('image/')) {
+            setSelectedFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const result = reader.result as string;
+                setPreviewUrl(result);
+            };
+            reader.readAsDataURL(file);
+            // Store the file name or a flag to indicate a new file was selected
+            control.change('__NEW_FILE__');
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        handleFileSelect(file);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        const file = e.dataTransfer.files[0];
+        handleFileSelect(file);
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragOver(false);
+    };
+
+    const clearFile = () => {
+        setPreviewUrl(null);
+        setSelectedFile(null);
+        control.change('');
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
+
+    const triggerFileSelect = () => {
+        fileInputRef.current?.click();
+    };
+
+    return (
+        <>
+            <input
+                ref={control.register}
+                name={name}
+                type="hidden"
+                value={control.value || ''}
+            />
+            <input
+                ref={fileInputRef}
+                type="file"
+                name={`${name}_file`}
+                accept="image/*"
+                onChange={handleFileChange}
+                className="sr-only"
+                onBlur={() => control.blur()}
+            />
+
+            <div
+                {...props}
+                onClick={triggerFileSelect}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                className={cn(
+                    "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+                    "focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                    "hover:border-muted-foreground/50",
+                    isDragOver
+                        ? "border-primary bg-primary/5"
+                        : "border-muted-foreground/25",
+                    className
+                )}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        triggerFileSelect();
+                    }
+                }}
+            >
+                {previewUrl ? (
+                    <div className="space-y-4">
+                        <div className="relative inline-block">
+                            <img
+                                src={previewUrl}
+                                alt="Preview"
+                                className="max-w-full max-h-48 rounded-lg shadow-sm"
+                            />
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    clearFile();
+                                }}
+                            >
+                                <X className="h-3 w-3" />
+                                <span className="sr-only">Remove image</span>
+                            </Button>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Click to change image</p>
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        <div className="flex justify-center">
+                            <Upload className="h-12 w-12 text-muted-foreground" />
+                        </div>
+                        <div className="space-y-2">
+                            <p className="text-lg font-medium text-foreground">
+                                Click to upload or drag and drop
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                                PNG, JPG, GIF up to 10MB
+                            </p>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>
+    );
+}
+
 
 type InputOTPProps = {
     id?: string;

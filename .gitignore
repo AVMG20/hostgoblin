@@ -43,3 +43,8 @@ next-env.d.ts
 .idea
 local.db
 /lib/db/local.db
+
+public/storage/image/large/*
+public/storage/image/medium/*
+public/storage/image/small/*
+public/storage/image/original/*

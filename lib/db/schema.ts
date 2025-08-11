@@ -18,12 +18,28 @@ export const posts = sqliteTable('posts', {
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$onUpdate(() => new Date()),
 });
 
+export const images = sqliteTable('images', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    originalName: text('original_name').notNull(),
+    fileName: text('file_name').notNull(),
+    mimeType: text('mime_type').notNull(),
+    size: integer('size').notNull(),
+    width: integer('width'),
+    height: integer('height'),
+    smallPath: text('small_path'),
+    mediumPath: text('medium_path'),
+    largePath: text('large_path'),
+    originalPath: text('original_path').notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull(),
+});
+
 export const categories = sqliteTable('categories', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     name: text('name').notNull(),
     slug: text('slug').notNull().unique(),
     description: text('description'),
     icon: text('icon'),
+    imageId: integer('image_id'),
     parentId: integer('parent_id'),
     sortOrder: integer('sort_order').default(0),
     isActive: integer('is_active', { mode: 'boolean' }).default(true),
@@ -59,6 +75,10 @@ export const productFeatures = sqliteTable('product_features', {
     sortOrder: integer('sort_order').default(0),
 });
 
+export const imagesRelations = relations(images, ({ many }) => ({
+    categories: many(categories),
+}));
+
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
     parent: one(categories, {
         fields: [categories.parentId],
@@ -66,6 +86,10 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
     }),
     children: many(categories),
     products: many(products),
+    image: one(images, {
+        fields: [categories.imageId],
+        references: [images.id],
+    }),
 }));
 
 export const productsRelations = relations(products, ({ one, many }) => ({
@@ -87,6 +111,8 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
+export type Image = typeof images.$inferSelect;
+export type NewImage = typeof images.$inferInsert;
 export type Category = typeof categories.$inferSelect;
 export type NewCategory = typeof categories.$inferInsert;
 export type Product = typeof products.$inferSelect;

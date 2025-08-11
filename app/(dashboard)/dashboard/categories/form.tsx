@@ -13,7 +13,7 @@ import {
     Checkbox,
     ActionButtons,
     FormErrors,
-    ComboBox
+    ComboBox, ImageUpload
 } from "@/components/form/form-components";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -165,9 +165,27 @@ export function Form({
                                 <p className="text-sm text-muted-foreground">Configure how your category appears and is organized</p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 <Field>
-                                    <Label htmlFor={fields.icon.id}>Icon</Label>
+                                    <Label htmlFor={fields.image.id}>Category Image</Label>
+                                    <ImageUpload
+                                        id={fields.image.id}
+                                        name={fields.image.name}
+                                        defaultValue={fields.image.initialValue as string}
+                                        aria-describedby={fields.image.errors ? `${fields.image.id}-error` : undefined}
+                                    />
+                                    {fields.image.errors && (
+                                        <FieldError id={`${fields.image.id}-error`}>
+                                            {fields.image.errors}
+                                        </FieldError>
+                                    )}
+                                    <p className="text-sm text-muted-foreground">
+                                        Upload an image for this category. Supported formats: JPG, PNG, WebP
+                                    </p>
+                                </Field>
+
+                                <Field>
+                                    <Label htmlFor={fields.icon.id}>Icon (Fallback)</Label>
                                     <Input
                                         id={fields.icon.id}
                                         name={fields.icon.name}
@@ -180,7 +198,13 @@ export function Form({
                                             {fields.icon.errors}
                                         </FieldError>
                                     )}
+                                    <p className="text-sm text-muted-foreground">
+                                        Used as fallback when no image is uploaded
+                                    </p>
                                 </Field>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                                 <Field>
                                     <Label htmlFor={fields.sortOrder.id}>Sort Order</Label>
