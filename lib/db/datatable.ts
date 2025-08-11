@@ -1,11 +1,11 @@
 import { db } from '@/lib/db/db';
 import { desc, asc, like, or, count, and } from 'drizzle-orm';
-import type { SQLiteTable } from "drizzle-orm/sqlite-core/table";
+import type { PgTable } from "drizzle-orm/pg-core/table";
 
 // Simple and clean type for column names
-type TableColumns<T extends SQLiteTable> = keyof T['_']['columns'];
+type TableColumns<T extends PgTable> = keyof T['_']['columns'];
 
-export interface QueryIndexParams<TTable extends SQLiteTable> {
+export interface QueryIndexParams<TTable extends PgTable> {
     page?: number;
     search?: string;
     sort?: string;
@@ -36,7 +36,7 @@ export async function parseSearchParams(searchParams:  Promise<{
     return { page, search, sort, order };
 }
 
-export async function queryIndex<TTable extends SQLiteTable>(table: TTable, params: QueryIndexParams<TTable> = {}): Promise<[Array<TTable['$inferSelect']>, number]> {
+export async function queryIndex<TTable extends PgTable>(table: TTable, params: QueryIndexParams<TTable> = {}): Promise<[Array<TTable['$inferSelect']>, number]> {
     const {
         page = 1,
         search,
@@ -68,6 +68,7 @@ export async function queryIndex<TTable extends SQLiteTable>(table: TTable, para
     }
 
     // Build the data query
+    // @ts-ignore
     let dataQuery = db.select().from(table);
     if (whereConditions.length > 0) {
         // @ts-ignore
@@ -90,6 +91,7 @@ export async function queryIndex<TTable extends SQLiteTable>(table: TTable, para
     dataQuery = dataQuery.limit(perPage).offset(offset);
 
     // Build the count query
+    // @ts-ignore
     let countQuery = db.select({ count: count() }).from(table);
     if (whereConditions.length > 0) {
         // @ts-ignore

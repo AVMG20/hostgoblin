@@ -58,7 +58,7 @@ export const products = pgTable('products', {
     diskGb: integer('disk_gb'),
     bandwidth: integer('bandwidth'),
     customLimits: json('custom_limits'),
-    pricePerHour: numeric('price_per_hour').notNull(),
+    pricePerHour: integer('price_per_hour').notNull(),
     isActive: boolean('is_active').default(true),
     isPopular: boolean('is_popular').default(false),
     sortOrder: integer('sort_order').default(0),
