@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { db } from '@/lib/db/db';
 import { categories, products, images } from '@/lib/db/schema';
 import { and, eq, isNull } from 'drizzle-orm';
-import { getImageUrl } from '@/lib/image-utils';
+import { getImageUrl } from '@/lib/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -32,10 +32,6 @@ async function getRootCategories() {
                 size: images.size,
                 width: images.width,
                 height: images.height,
-                smallPath: images.smallPath,
-                mediumPath: images.mediumPath,
-                largePath: images.largePath,
-                originalPath: images.originalPath,
                 createdAt: images.createdAt,
             }
         })
@@ -149,7 +145,7 @@ export default async function Home() {
                                             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
                                                 {category.image ? (
                                                     <img 
-                                                        src={getImageUrl(category.image, 'small')} 
+                                                        src={getImageUrl(category.image.fileName, 'small')}
                                                         alt={category.name}
                                                         className="w-full h-full object-cover"
                                                     />

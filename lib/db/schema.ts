@@ -26,10 +26,6 @@ export const images = pgTable('images', {
     size: integer('size').notNull(),
     width: integer('width'),
     height: integer('height'),
-    smallPath: text('small_path'),
-    mediumPath: text('medium_path'),
-    largePath: text('large_path'),
-    originalPath: text('original_path').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 

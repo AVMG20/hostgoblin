@@ -50,6 +50,7 @@ import { Textarea } from '../ui/textarea';
 import {useFormStatus} from "react-dom";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {useConfirm} from "@/components/form/confirm";
+import {getImageUrl} from "@/lib/image";
 
 type FieldProps = {
     children: React.ReactNode;
@@ -553,8 +554,8 @@ export function ImageUpload({ name, defaultValue, className, ...props }: ImageUp
         try {
             // Try to parse as JSON (existing image data)
             const imageData = JSON.parse(defaultValue);
-            if (imageData && imageData.smallPath) {
-                return imageData.smallPath;
+            if (imageData && imageData.fileName) {
+                return getImageUrl(imageData.fileName, 'original')
             }
         } catch {
             // If not JSON, treat as direct URL or path

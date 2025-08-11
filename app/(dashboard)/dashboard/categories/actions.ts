@@ -7,7 +7,7 @@ import { categorySchema } from '@/app/(dashboard)/dashboard/categories/schema';
 import {db} from "@/lib/db/db";
 import {categories, images} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";
-import { storeImage, deleteImage } from '@/lib/image-utils';
+import { storeImage, deleteImage } from '@/lib/image-handler';
 
 export async function createCategory(prevState: unknown, formData: FormData) {
     const submission = parseWithZod(formData, {
@@ -181,10 +181,6 @@ export async function getCategory(id: number) {
                 size: images.size,
                 width: images.width,
                 height: images.height,
-                smallPath: images.smallPath,
-                mediumPath: images.mediumPath,
-                largePath: images.largePath,
-                originalPath: images.originalPath,
                 createdAt: images.createdAt,
             }
         })
