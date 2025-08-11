@@ -1,25 +1,25 @@
-import { sql, relations } from 'drizzle-orm';
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
+import { relations } from 'drizzle-orm';
+import { pgTable, text, integer, serial, numeric, boolean, timestamp, json } from 'drizzle-orm/pg-core';
 
-export const users = sqliteTable('users', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
+export const users = pgTable('users', {
+    id: serial('id').primaryKey(),
     name: text('name').notNull(),
     email: text('email').notNull().unique(),
-    createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
-export const posts = sqliteTable('posts', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
+export const posts = pgTable('posts', {
+    id: serial('id').primaryKey(),
     title: text('title').notNull(),
     content: text('content').notNull(),
     slug: text('slug').notNull().unique(),
-    published: integer('published', { mode: 'boolean' }).default(false),
-    createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$onUpdate(() => new Date()),
+    published: boolean('published').default(false),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
 });
 
-export const images = sqliteTable('images', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
+export const images = pgTable('images', {
+    id: serial('id').primaryKey(),
     originalName: text('original_name').notNull(),
     fileName: text('file_name').notNull(),
     mimeType: text('mime_type').notNull(),
@@ -30,11 +30,11 @@ export const images = sqliteTable('images', {
     mediumPath: text('medium_path'),
     largePath: text('large_path'),
     originalPath: text('original_path').notNull(),
-    createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
-export const categories = sqliteTable('categories', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
+export const categories = pgTable('categories', {
+    id: serial('id').primaryKey(),
     name: text('name').notNull(),
     slug: text('slug').notNull().unique(),
     description: text('description'),
@@ -42,13 +42,13 @@ export const categories = sqliteTable('categories', {
     imageId: integer('image_id'),
     parentId: integer('parent_id'),
     sortOrder: integer('sort_order').default(0),
-    isActive: integer('is_active', { mode: 'boolean' }).default(true),
-    createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$onUpdate(() => new Date()),
+    isActive: boolean('is_active').default(true),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
 });
 
-export const products = sqliteTable('products', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
+export const products = pgTable('products', {
+    id: serial('id').primaryKey(),
     name: text('name').notNull(),
     slug: text('slug').notNull().unique(),
     description: text('description'),
@@ -57,19 +57,19 @@ export const products = sqliteTable('products', {
     cpuCores: integer('cpu_cores'),
     diskGb: integer('disk_gb'),
     bandwidth: integer('bandwidth'),
-    customLimits: text('custom_limits', { mode: 'json' }),
-    pricePerHour: real('price_per_hour').notNull(),
-    isActive: integer('is_active', { mode: 'boolean' }).default(true),
-    isPopular: integer('is_popular', { mode: 'boolean' }).default(false),
+    customLimits: json('custom_limits'),
+    pricePerHour: numeric('price_per_hour').notNull(),
+    isActive: boolean('is_active').default(true),
+    isPopular: boolean('is_popular').default(false),
     sortOrder: integer('sort_order').default(0),
     integrationType: text('integration_type'),
-    integrationConfig: text('integration_config', { mode: 'json' }),
-    createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull(),
-    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$onUpdate(() => new Date()),
+    integrationConfig: json('integration_config'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
 });
 
-export const productFeatures = sqliteTable('product_features', {
-    id: integer('id').primaryKey({ autoIncrement: true }),
+export const productFeatures = pgTable('product_features', {
+    id: serial('id').primaryKey(),
     productId: integer('product_id').notNull(),
     feature: text('feature').notNull(),
     sortOrder: integer('sort_order').default(0),
