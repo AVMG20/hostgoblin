@@ -190,16 +190,30 @@ export async function deleteImage(id: number): Promise<void> {
  * Gets the public URL for an image size
  */
 export function getImageUrl(image: { smallPath?: string | null; mediumPath?: string | null; largePath?: string | null; originalPath: string }, size: ImageSize | 'original' = 'small'): string {
+  let imagePath: string;
+
   switch (size) {
     case 'small':
-      return image.smallPath || image.originalPath;
+      imagePath = image.smallPath || image.originalPath;
+      break;
     case 'medium':
-      return image.mediumPath || image.originalPath;
+      imagePath = image.mediumPath || image.originalPath;
+      break;
     case 'large':
-      return image.largePath || image.originalPath;
+      imagePath = image.largePath || image.originalPath;
+      break;
     case 'original':
-      return image.originalPath;
+      imagePath = image.originalPath;
+      break;
     default:
-      return image.originalPath;
+      imagePath = image.originalPath;
   }
+
+  // Convert the storage path to API endpoint path
+  // Remove the leading '/storage/image/' and prepend '/api/images/'
+  if (imagePath.startsWith('/storage/image/')) {
+    return imagePath.replace('/storage/image/', '/api/images/');
+  }
+
+  return imagePath;
 }
