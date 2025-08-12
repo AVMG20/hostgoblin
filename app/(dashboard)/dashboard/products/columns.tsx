@@ -7,6 +7,7 @@ import {DataTableColumn} from "@/components/form/data-table";
 import { Button } from '@/components/ui/button';
 import {deleteProduct} from "@/app/(dashboard)/dashboard/products/actions";
 import {DeleteButton} from "@/components/form/form-components";
+import Dinero from "dinero.js";
 
 export const columns: DataTableColumn<Product>[] = [{
     key: 'id',
@@ -44,7 +45,7 @@ export const columns: DataTableColumn<Product>[] = [{
     sortable: true,
     render: (row: Product) => (
         <span className="text-sm font-medium">
-            ${(row.pricePerHour / 100).toFixed(2)}
+            {Dinero({amount: row.pricePerHour, currency: 'EUR'}).toFormat()}
         </span>
     )
 }, {

@@ -109,6 +109,9 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                                             {fields.slug.errors}
                                         </FieldError>
                                     )}
+                                    <span className="text-muted-foreground">{fields.slug.value && (
+                                        `${window.location.host}/checkout/${encodeURI(fields.slug.value)}`
+                                    )}</span>
                                 </Field>
                             </div>
 

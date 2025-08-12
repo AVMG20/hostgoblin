@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Star, Cpu, HardDrive, Zap, Server } from 'lucide-react';
+import Link from 'next/link';
+import Dinero from "dinero.js";
 
 export const revalidate = 3600;
 
@@ -89,7 +91,7 @@ function formatSpecs(product: any) {
     if (product.ramMb) specs.push({ icon: Server, label: 'RAM', value: `${product.ramMb}MB` });
     if (product.cpuCores) specs.push({ icon: Cpu, label: 'CPU', value: `${product.cpuCores} cores` });
     if (product.diskGb) specs.push({ icon: HardDrive, label: 'Disk', value: `${product.diskGb}GB` });
-    if (product.bandwidth) specs.push({ icon: Zap, label: 'Bandwidth', value: `${product.bandwidth}GB` });
+    if (product.bandwidth) specs.push({ icon: Zap, label: 'Bandwidth', value: `${product.bandwidth}MB` });
     return specs;
 }
 
@@ -130,10 +132,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         const specs = formatSpecs(product);
 
                         return (
-                            <Card key={product.id} className="group hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
+                            <Card key={product.id} className="group hover:shadow-lg transition-all duration-200 hover:scale-105">
                                 <CardHeader className="space-y-3">
                                     <div className="flex items-start justify-between">
-                                        <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                                        <CardTitle className="text-xl transition-colors">
                                             {product.name}
                                         </CardTitle>
                                         {product.isPopular && (
@@ -174,15 +176,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <div className="text-3xl font-bold text-primary">
-                                                    ${product.pricePerHour}
+                                                   {Dinero({amount: product.pricePerHour, currency: 'EUR'}).toFormat()}
                                                 </div>
                                                 <div className="text-sm text-muted-foreground">per hour</div>
                                             </div>
                                         </div>
 
-                                        <Button className="w-full" size="lg">
-                                            Get Started
-                                        </Button>
+                                        <Link href={`/checkout/${product.slug}`}>
+                                            <Button className="w-full" size="lg">
+                                                Get Started
+                                            </Button>
+                                        </Link>
                                     </div>
                                 </CardContent>
                             </Card>

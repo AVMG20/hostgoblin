@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Star, ArrowRight, Store, Sparkles, Zap, Shield, Clock, HardDrive, Cpu, Activity, Globe, Users, Award, CheckCircle } from 'lucide-react';
 import Footer from "@/components/layout/footer";
+import Dinero from 'dinero.js';
 
 async function getRootCategories() {
     try {
@@ -206,7 +207,7 @@ export default async function Home() {
                                         <CardTitle className="text-xl">{product.name}</CardTitle>
                                         <div className="flex items-baseline space-x-2">
                                             <span className="text-3xl font-bold text-primary">
-                                                ${product.pricePerHour.toFixed(3)}
+                                                {Dinero({amount: product.pricePerHour, currency: 'EUR'}).toFormat()}
                                             </span>
                                             <span className="text-muted-foreground">/hour</span>
                                         </div>
@@ -244,14 +245,14 @@ export default async function Home() {
                                             {product.bandwidth && (
                                                 <div className="flex items-center space-x-3 text-sm">
                                                     <Globe className="w-4 h-4 text-primary" />
-                                                    <span>{product.bandwidth}GB Bandwidth</span>
+                                                    <span>{product.bandwidth}MB Bandwidth</span>
                                                 </div>
                                             )}
                                         </div>
 
                                         <Separator className="my-4" />
 
-                                        <Link href={`/products/${product.slug}`}>
+                                        <Link href={`/checkout/${product.slug}`}>
                                             <Button className="w-full">
                                                 Choose Plan
                                                 <ArrowRight className="w-4 h-4 ml-2" />
