@@ -3,13 +3,14 @@ import { getProduct, getCategories } from '@/app/(dashboard)/dashboard/products/
 import { notFound } from 'next/navigation';
 
 interface EditProductPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
-    const productId = parseInt(params.id);
+    const param = await params;
+    const productId = parseInt(param.id);
 
     if (isNaN(productId)) {
         notFound();
