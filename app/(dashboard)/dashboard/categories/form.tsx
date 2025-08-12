@@ -72,8 +72,8 @@ export function Form({
     });
 
     return (
-        <div className="container mx-auto py-8 max-w-2xl">
-            <Card>
+        <div className="max-w-6xl m-auto py-8">
+            <Card className={'bg-background'}>
                 <CardHeader>
                     <CardTitle className="text-2xl">{title}</CardTitle>
                 </CardHeader>
@@ -135,6 +135,9 @@ export function Form({
                                             {fields.slug.errors}
                                         </FieldError>
                                     )}
+                                    <span className="text-muted-foreground">{fields.slug.value && (
+                                        `${window.location.host}/categories/${encodeURI(fields.slug.value)}`
+                                    )}</span>
                                 </Field>
                             </div>
 
@@ -183,28 +186,48 @@ export function Form({
                                         Upload an image for this category. Supported formats: JPG, PNG, WebP
                                     </p>
                                 </Field>
-
-                                <Field>
-                                    <Label htmlFor={fields.icon.id}>Icon (Fallback)</Label>
-                                    <Input
-                                        id={fields.icon.id}
-                                        name={fields.icon.name}
-                                        defaultValue={fields.icon.initialValue as string}
-                                        placeholder="e.g., Code, 📱, or lucide icon name"
-                                        aria-describedby={fields.icon.errors ? `${fields.icon.id}-error` : undefined}
-                                    />
-                                    {fields.icon.errors && (
-                                        <FieldError id={`${fields.icon.id}-error`}>
-                                            {fields.icon.errors}
-                                        </FieldError>
-                                    )}
-                                    <p className="text-sm text-muted-foreground">
-                                        Used as fallback when no image is uploaded
-                                    </p>
-                                </Field>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex items-center flex-wrap gap-4">
+
+                                <Field>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox
+                                            id={fields.isActive.id}
+                                            name={fields.isActive.name}
+                                            defaultChecked={fields.isActive.initialValue === 'on'}
+                                            aria-describedby={fields.isActive.errors ? `${fields.isActive.id}-error` : undefined}
+                                        />
+                                        <Label htmlFor={fields.isActive.id} className="font-normal">
+                                            Active category
+                                        </Label>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground ml-6">
+                                        Inactive categories won't be visible to users
+                                    </p>
+                                    {fields.isActive.errors && (
+                                        <FieldError id={`${fields.isActive.id}-error`}>
+                                            {fields.isActive.errors}
+                                        </FieldError>
+                                    )}
+                                </Field>
+
+                                <Field>
+                                    <Label htmlFor={fields.parentId.id}>Parent Category</Label>
+                                    <ComboBox
+                                        id={fields.parentId.id}
+                                        name={fields.parentId.name}
+                                        defaultValue={fields.parentId.initialValue as string}
+                                        items={parentCategories}
+                                        placeholder="Select a parent category (optional)"
+                                        aria-describedby={fields.parentId.errors ? `${fields.parentId.id}-error` : undefined}
+                                    />
+                                    {fields.parentId.errors && (
+                                        <FieldError id={`${fields.parentId.id}-error`}>
+                                            {fields.parentId.errors}
+                                        </FieldError>
+                                    )}
+                                </Field>
 
                                 <Field>
                                     <Label htmlFor={fields.sortOrder.id}>Sort Order</Label>
@@ -223,46 +246,9 @@ export function Form({
                                         </FieldError>
                                     )}
                                 </Field>
+
                             </div>
 
-                            <Field>
-                                <Label htmlFor={fields.parentId.id}>Parent Category</Label>
-                                <ComboBox
-                                    id={fields.parentId.id}
-                                    name={fields.parentId.name}
-                                    defaultValue={fields.parentId.initialValue as string}
-                                    items={parentCategories}
-                                    placeholder="Select a parent category (optional)"
-                                    aria-describedby={fields.parentId.errors ? `${fields.parentId.id}-error` : undefined}
-                                />
-                                {fields.parentId.errors && (
-                                    <FieldError id={`${fields.parentId.id}-error`}>
-                                        {fields.parentId.errors}
-                                    </FieldError>
-                                )}
-                            </Field>
-
-                            <Field>
-                                <div className="flex items-center space-x-2">
-                                    <Checkbox
-                                        id={fields.isActive.id}
-                                        name={fields.isActive.name}
-                                        defaultChecked={fields.isActive.initialValue === 'on'}
-                                        aria-describedby={fields.isActive.errors ? `${fields.isActive.id}-error` : undefined}
-                                    />
-                                    <Label htmlFor={fields.isActive.id} className="font-normal">
-                                        Active category
-                                    </Label>
-                                </div>
-                                <p className="text-sm text-muted-foreground ml-6">
-                                    Inactive categories won't be visible to users
-                                </p>
-                                {fields.isActive.errors && (
-                                    <FieldError id={`${fields.isActive.id}-error`}>
-                                        {fields.isActive.errors}
-                                    </FieldError>
-                                )}
-                            </Field>
                         </div>
 
                         <Separator />
