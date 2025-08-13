@@ -6,7 +6,7 @@ import {parseWithZod} from '@conform-to/zod';
 import {productSchema} from '@/app/(dashboard)/dashboard/products/schema';
 import {db} from "@/lib/db/db";
 import {categories, products} from "@/lib/db/schema";
-import {eq} from "drizzle-orm";
+import {and, eq, ne} from "drizzle-orm";
 
 export async function createProduct(prevState: unknown, formData: FormData) {
     const submission = parseWithZod(formData, {
@@ -27,7 +27,8 @@ export async function createProduct(prevState: unknown, formData: FormData) {
         .where(eq(products.slug, productData.slug))
         .limit(1);
 
-    if (existingProduct) {
+
+    if (existingProduct[0]) {
         return submission.reply({
             fieldErrors: {
                 slug: ['Product with this slug already exists.']
@@ -72,6 +73,24 @@ export async function updateProduct(prevState: unknown, formData: FormData) {
                 formErrors: ['Product not found.'],
             });
         }
+
+        // Check if slug exists for any other product
+        const existingProduct = await db.select()
+            .from(products)
+            .where(and(
+                eq(products.slug, submission.value.slug),
+                ne(products.id, id)
+            ))
+            .limit(1);
+
+        if (existingProduct[0]) {
+            return submission.reply({
+                fieldErrors: {
+                    slug: ['Product with this slug already exists.']
+                },
+            });
+        }
+
 
         // Update product
         const productData = {
