@@ -12,8 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {ActionButtons, Field, FieldError} from '@/components/form/form-components';
+import {ActionButtons, ComboBox, Field, FieldError} from '@/components/form/form-components';
 import { Product } from '@/lib/db/schema';
 
 interface ProductFormProps {
@@ -132,26 +131,29 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                                 )}
                             </Field>
 
-                            <Field>
-                                <Label htmlFor={fields.categoryId.id}>Category *</Label>
-                                <Select name={fields.categoryId.name} defaultValue={fields.categoryId.initialValue?.toString()}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((category) => (
-                                            <SelectItem key={category.id} value={category.id.toString()}>
-                                                {category.name}
-                                            </SelectItem>
+                            <div className={'grid grid-cols-1 lg:grid-cols-2 gap-4'}>
+                                <Field>
+                                    <Label htmlFor={fields.categoryId.id}>Category *</Label>
+                                    <ComboBox
+                                        id={fields.categoryId.id}
+                                        name={fields.categoryId.name}
+                                        defaultValue={fields.categoryId.initialValue?.toString()}
+                                        items={categories.map(category => (
+                                            {
+                                                label: category.name,
+                                                value: category.id.toString()
+                                            }
                                         ))}
-                                    </SelectContent>
-                                </Select>
-                                {fields.categoryId.errors && (
-                                    <FieldError id={`${fields.categoryId.id}-error`}>
-                                        {fields.categoryId.errors}
-                                    </FieldError>
-                                )}
-                            </Field>
+                                        placeholder="Select a category"
+                                        aria-describedby={fields.categoryId.errors ? `${fields.categoryId.id}-error` : undefined}
+                                    />
+                                    {fields.categoryId.errors && (
+                                        <FieldError id={`${fields.categoryId.id}-error`}>
+                                            {fields.categoryId.errors}
+                                        </FieldError>
+                                    )}
+                                </Field>
+                            </div>
                         </div>
 
                         <Separator />

@@ -54,6 +54,7 @@ import {getImageUrl} from "@/lib/image";
 
 type FieldProps = {
     children: React.ReactNode;
+    className?: string;
     role?: string;
     ['aria-labelledby']?: string;
 };
@@ -62,10 +63,11 @@ function Field({
                    role,
                    children,
                    'aria-labelledby': ariaLabelledby,
+                    className
                }: FieldProps) {
     return (
         <div
-            className="flex flex-col gap-2"
+            className={cn("flex flex-col gap-2", className)}
             role={role}
             aria-labelledby={ariaLabelledby}
         >
@@ -182,7 +184,7 @@ function ComboBox({ items, placeholder, name, defaultValue, ...props }: Combobox
                         variant="outline"
                         role="combobox"
                         className={cn(
-                            'w-[300px] justify-between',
+                            'justify-between',
                             !control.value && 'text-muted-foreground',
                             'focus:ring-2 focus:ring-stone-950 focus:ring-offset-2',
                         )}
@@ -191,7 +193,7 @@ function ComboBox({ items, placeholder, name, defaultValue, ...props }: Combobox
                         <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[300px] p-0">
+                <PopoverContent className="p-0" style={{ width: 'var(--radix-popover-trigger-width)' }}>
                     <Command>
                         <CommandInput placeholder="Search country..." />
                         <CommandList>
