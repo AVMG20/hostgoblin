@@ -1,11 +1,7 @@
 'use client';
 
 import { useForm } from '@conform-to/react';
-import { parseWithZod } from '@conform-to/zod';
-import { useFormState } from 'react-dom';
-import { productSchema, ProductFormData } from '@/app/(dashboard)/dashboard/products/schema';
 import { createProduct, updateProduct } from '@/app/(dashboard)/dashboard/products/actions';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -14,6 +10,9 @@ import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import {ActionButtons, ComboBox, Field, FieldError} from '@/components/form/form-components';
 import { Product } from '@/lib/db/schema';
+import {startTransition, useActionState} from "react";
+import {parseWithZod} from "@conform-to/zod";
+import {productSchema} from "@/app/(dashboard)/dashboard/products/schema";
 
 interface ProductFormProps {
     product?: Product;
@@ -21,18 +20,23 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ product, categories }: ProductFormProps) {
-    const [lastResult, action] = useFormState(
-        product ? updateProduct : createProduct,
-        undefined
-    );
+    const [lastResult, action] = useActionState(product ? updateProduct : createProduct, undefined);
 
     const [form, fields] = useForm({
         lastResult,
         onValidate({ formData }) {
             return parseWithZod(formData, { schema: productSchema });
         },
+        onSubmit(event, { formData }) {
+            event.preventDefault();
+
+            startTransition(async () => {
+                await action(formData);
+            });
+        },
         shouldValidate: 'onBlur',
         shouldRevalidate: 'onInput',
+
         defaultValue: product ? {
             id: product.id,
             name: product.name,

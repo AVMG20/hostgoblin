@@ -1,11 +1,11 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { parseWithZod } from '@conform-to/zod';
-import { productSchema } from '@/app/(dashboard)/dashboard/products/schema';
+import {revalidatePath} from 'next/cache';
+import {redirect} from 'next/navigation';
+import {parseWithZod} from '@conform-to/zod';
+import {productSchema} from '@/app/(dashboard)/dashboard/products/schema';
 import {db} from "@/lib/db/db";
-import {products, categories} from "@/lib/db/schema";
+import {categories, products} from "@/lib/db/schema";
 import {eq} from "drizzle-orm";
 
 export async function createProduct(prevState: unknown, formData: FormData) {
@@ -17,12 +17,25 @@ export async function createProduct(prevState: unknown, formData: FormData) {
         return submission.reply();
     }
 
-    try {
-        // Create product
-        const productData = {
-            ...submission.value,
-        };
+    // Create product
+    const productData = {
+        ...submission.value,
+    };
 
+    const existingProduct = await db.select()
+        .from(products)
+        .where(eq(products.slug, productData.slug))
+        .limit(1);
+
+    if (existingProduct) {
+        return submission.reply({
+            fieldErrors: {
+                slug: ['Product with this slug already exists.']
+            },
+        });
+    }
+
+    try {
         await db.insert(products).values(productData);
 
         revalidatePath('/');
@@ -148,15 +161,13 @@ export async function getProduct(id: number) {
 
 export async function getCategories() {
     try {
-        const categoriesList = await db.select({
+        return await db.select({
             id: categories.id,
             name: categories.name,
         })
-        .from(categories)
-        .where(eq(categories.isActive, true))
-        .orderBy(categories.name);
-
-        return categoriesList;
+            .from(categories)
+            .where(eq(categories.isActive, true))
+            .orderBy(categories.name);
     } catch (error: any) {
         throw new Error('Failed to get categories');
     }
