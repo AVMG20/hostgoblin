@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db/db';
 import { categories, products } from '@/lib/db/schema';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -33,15 +33,46 @@ async function getCategory(slug: string) {
     }
 }
 
-async function getCategoryProducts(categoryId: number) {
+async function getChildCategories(parentId: number) {
     try {
         return await db.select()
-            .from(products)
+            .from(categories)
             .where(and(
-                eq(products.categoryId, categoryId),
-                eq(products.isActive, true)
-            ))
-            .orderBy(products.sortOrder, products.name);
+                eq(categories.parentId, parentId),
+                eq(categories.isActive, true)
+            ));
+    } catch (error) {
+        console.error('Failed to get child categories:', error);
+        return [];
+    }
+}
+
+async function getCategoryProducts(categoryId: number) {
+    try {
+        // First, check if this category has child categories
+        const childCategories = await getChildCategories(categoryId);
+
+        if (childCategories.length > 0) {
+            // If it's a parent category, get products from all child categories
+            const childCategoryIds = childCategories.map(child => child.id);
+            return await db.select()
+                .from(products)
+                .where(and(
+                    eq(products.isActive, true),
+                    // Use inArray to get products from all child categories
+                    inArray(products.categoryId, childCategoryIds)
+                ))
+                .orderBy(products.sortOrder, products.name);
+        } else {
+            // If it's a child category (or has no children), get products only from this category
+            return await db.select()
+                .from(products)
+                .where(and(
+                    eq(products.categoryId, categoryId),
+                    eq(products.isActive, true)
+                ))
+                .orderBy(products.sortOrder, products.name);
+        }
     } catch (error) {
         console.error('Failed to get category products:', error);
         return [];

@@ -1,5 +1,5 @@
 import { db } from '@/lib/db/db';
-import { desc, asc, like, or, count, and } from 'drizzle-orm';
+import { desc, asc, like, or, count, and, eq } from 'drizzle-orm';
 import type { PgTable } from "drizzle-orm/pg-core/table";
 
 // Simple and clean type for column names
@@ -59,10 +59,16 @@ export async function queryIndex<TTable extends PgTable>(table: TTable, params: 
         );
 
         if (validSearchableColumns.length > 0) {
-            const searchConditions = validSearchableColumns.map(col =>
-                // @ts-ignore
-                like(table[col], `%${search}%`)
-            );
+            const searchConditions = validSearchableColumns.map(col => {
+                // Use exact match for 'id' column, fuzzy match for others
+                if (col === 'id') {
+                    // @ts-ignore
+                    return eq(table[col], search);
+                } else {
+                    // @ts-ignore
+                    return like(table[col], `%${search}%`);
+                }
+            });
             whereConditions.push(or(...searchConditions));
         }
     }
